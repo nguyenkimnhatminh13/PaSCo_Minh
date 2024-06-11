@@ -157,7 +157,7 @@ WORK IN PROGRESS
       pip install -e ./
       ```
 
-> [!NOTE]
+> [!CAUTION]
 > I used the old version of WaffleIron which requires pytorch 1.11.0.
 
 
@@ -177,6 +177,7 @@ WORK IN PROGRESS
 ### 4.1.2 Training
 > [!NOTE]
 > The generated instance label is supposed to be stored in os.path.join(dataset_preprocess_root, "instance_labels_v2")
+
 1. Change the `dataset_preprocess_root` and `dataset_root` of the training command below to the preprocess and raw data folder respectively.
 2. The `log_dir` is the folder to store the training logs and checkpoints.
 3. Run the following command to train PaSCo w/o MIMO with batchsize of 2 on 2 V100-32G GPUs (1 item per GPU):
@@ -193,7 +194,7 @@ WORK IN PROGRESS
             --sample_query_class=True --n_infers=1
     
       ```
-> [!NOTE]
+> [!IMPORTANT]
 > During training, the reported metric is lower than the final metrics because we limit the number of generated voxels to prevent running out of memory. The training metrics are used solely to assess the progress of the training. The final metric is determined during evaluation.
 
 ## 4.1.2 Evaluation
@@ -235,7 +236,7 @@ WORK IN PROGRESS
       ensemble,  0.6235, 4.6463, 0.0911, 0.0357, 0.7075, 0.9657, 11702, 0.00
       allocated 8895.119325153375
       ```
-> [!NOTE]
+> [!IMPORTANT]
 > Note that **voxel ece = (ssc empty ece + ssc nonempty ece)/2** and **voxel nll = (ssc empty nll + ssc nonempty nll)/2**.
 > The inference time reported in the paper was measured on an A100 GPU so it is faster than on v100.
 
