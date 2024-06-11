@@ -161,7 +161,7 @@ WORK IN PROGRESS
 > I used the old version of WaffleIron which requires pytorch 1.11.0.
 
 
-2. Run the following command to extract point features from the pretrained WaffleIron model (require 10883Mb GPU memory). The extracted features will be stored in the `result_folder`:
+2. Run the following command to extract point features from the pretrained WaffleIron model (require 10883Mb GPU memory) pretrained on SemanticKITTI. The extracted features will be stored in the `result_folder`:
       ```
       cd PaSCo/WaffleIron_mod
       python extract_point_features.py \
