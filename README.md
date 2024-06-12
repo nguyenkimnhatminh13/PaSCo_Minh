@@ -148,6 +148,9 @@ WORK IN PROGRESS
 
 ### 4.1.1 Extract point features
 
+> [!NOTE]
+> This step is only necessary when training on SemanticKITTI because of the availability of the WaffleIron pretrained model.
+
 
 1. Install WaffleIron in a separate conda environment:
       ```
@@ -158,7 +161,7 @@ WORK IN PROGRESS
       ```
 
 > [!CAUTION]
-> I used the old version of WaffleIron which requires pytorch 1.11.0.
+> I used the older version of WaffleIron which requires pytorch 1.11.0.
 
 
 2. Run the following command to extract point features from the pretrained WaffleIron model (require 10883Mb GPU memory) pretrained on SemanticKITTI. The extracted features will be stored in the `result_folder`:
@@ -238,7 +241,8 @@ WORK IN PROGRESS
       ```
 > [!IMPORTANT]
 > Note that **voxel ece = (ssc empty ece + ssc nonempty ece)/2** and **voxel nll = (ssc empty nll + ssc nonempty nll)/2**.
-> The inference time reported in the paper was measured on an A100 GPU so it is faster than on v100.
+> 
+> The inference time reported in the paper was measured on an A100 GPU, making it faster than on a V100.
 
 ## 4.2. PaSCo w/ MIMO
 WORK IN PROGRESS
