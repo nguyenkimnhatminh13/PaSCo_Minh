@@ -22,7 +22,7 @@
 # Networks", CVPR'19 (https://arxiv.org/abs/1904.08755) if you use any part
 # of the code.
 from time import time
-from uncertainty.models.metrics import SSCMetrics
+from pasco.models.metrics import SSCMetrics
 
 # Must be imported before large libs
 import torch
@@ -32,15 +32,15 @@ from torch.nn import functional as F
 import numpy as np
 
 import MinkowskiEngine as ME
-from uncertainty.models.misc import to_dense_tensor_batch, prune_outside_coords
+from pasco.models.misc import to_dense_tensor_batch, prune_outside_coords
 
-from uncertainty.models.misc import compute_scene_size
-from uncertainty.maskpls.mink import (
+from pasco.models.misc import compute_scene_size
+from pasco.maskpls.mink import (
     BasicGenerativeDeconvolutionBlock,
     ResidualBlock,
 )
 from collections import defaultdict
-from uncertainty.models.utils import batch_sparse_tensor
+from pasco.models.utils import batch_sparse_tensor
 
 
 class TransformerInFeat(nn.Module):
