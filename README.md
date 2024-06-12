@@ -151,6 +151,10 @@ WORK IN PROGRESS
 > [!NOTE]
 > This step is only necessary when training on SemanticKITTI because of the availability of the WaffleIron pretrained model.
 
+> [!TIP]
+> A better alternative is to use features from better pretrained models available at [https://github.com/valeoai/ScaLR](https://github.com/valeoai/ScaLR) .
+
+
 
 1. Install WaffleIron in a separate conda environment:
       ```
