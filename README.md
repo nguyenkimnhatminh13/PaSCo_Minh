@@ -242,7 +242,7 @@ WORK IN PROGRESS
 > [!IMPORTANT]
 > Note that **voxel ece = (ssc empty ece + ssc nonempty ece)/2** and **voxel nll = (ssc empty nll + ssc nonempty nll)/2**.
 > 
-> The inference time reported in the paper was measured on an A100 GPU, making it faster than on a V100.
+> The inference time reported in the paper was measured on an A100 GPU, making it faster than on a V100. For SemanticKITTI, the time also includes the WaffleIron feature extraction duration.
 
 ## 4.2. PaSCo w/ MIMO
 WORK IN PROGRESS
