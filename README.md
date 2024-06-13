@@ -38,8 +38,9 @@ If you find this work or code useful, please cite our [paper](https://arxiv.org/
 - [News](#news) 
 - [1. Installation](#1-installation)
 - [2. Data](#2-data)
-- [3. Panoptic labels generation](#3-panoptic-label-generation)
+- [3. Panoptic labels generation](#3-panoptic-labels-generation)
 - [4. Training and evaluation](#4-training-and-evaluation)
+- [5. Visualization](#5-visualization)
 
 
 # News
@@ -90,7 +91,6 @@ Please download the following data into a folder e.g. **/gpfsdswork/dataset/Sema
     ```
     └── /gpfsdswork/dataset/SemanticKITTI
       └── dataset
-        ├── poses
         └── sequences
     ```
 
@@ -152,8 +152,7 @@ WORK IN PROGRESS
 > This step is only necessary when training on SemanticKITTI because of the availability of the WaffleIron pretrained model.
 
 > [!TIP]
-> A better alternative is to use features from better pretrained models available at [https://github.com/valeoai/ScaLR](https://github.com/valeoai/ScaLR) .
-
+> A better approach could be to explore the features of pretrained models available at [https://github.com/valeoai/ScaLR](https://github.com/valeoai/ScaLR).
 
 
 1. Install WaffleIron in a separate conda environment:
@@ -211,7 +210,7 @@ WORK IN PROGRESS
       python scripts/eval.py --n_infers=1 --model_path=ckpt/pasco_single.ckpt
       ```
 
-      
+   
 
 3. Output looks like following:
       ```
@@ -251,6 +250,9 @@ WORK IN PROGRESS
 ## 4.2. PaSCo w/ MIMO
 WORK IN PROGRESS
 
+# 5. Visualization
+WORK IN PROGRESS
+
 # Acknowledgment
 We thank the authors of the following repositories for making their code and models publicly available:
 - https://github.com/valeoai/WaffleIron
@@ -259,6 +261,7 @@ We thank the authors of the following repositories for making their code and mod
 - https://github.com/astra-vision/LMSCNet
 - https://github.com/yanx27/JS3C-Net
 - https://github.com/facebookresearch/Mask2Former
+- https://github.com/ENSTA-U2IS-AI/torch-uncertainty
 
 
 The research was supported by the French project SIGHT (ANR-20-CE23-0016), the ERC Starting Grant SpatialSem (101076253), and the SAMBA collaborative project co-funded by
