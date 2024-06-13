@@ -91,7 +91,6 @@ Please download the following data into a folder e.g. **/gpfsdswork/dataset/Sema
     ```
     └── /gpfsdswork/dataset/SemanticKITTI
       └── dataset
-        ├── poses
         └── sequences
     ```
 
