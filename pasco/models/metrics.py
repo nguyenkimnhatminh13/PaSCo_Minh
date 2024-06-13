@@ -80,29 +80,6 @@ class UncertaintyMetrics:
             self.variation[k] += variation[k]
         self.variation_count += 1
 
-    def compute_ece_dense(self, prob_mask, gt_panoptic_seg_query_id, query_id_map):
-        preds = prob_mask.F
-        coords = prob_mask.C.long().cpu().numpy()
-        target = gt_panoptic_seg_query_id[coords[:, 1], coords[:, 2], coords[:, 3]]
-        target = torch.from_numpy(target).long().to(preds.device)
-        mask_ids = query_id_map[coords[:, 1], coords[:, 2], coords[:, 3]]
-
-        mask_ids = torch.from_numpy(mask_ids).long().to(preds.device)
-        known_mask = (target != 255) & (
-            mask_ids != 255
-        )  # NOTE: in our current prediction, the output doesn't contain the map to the empty voxels
-        mask_ids = mask_ids[known_mask]
-        preds = preds[known_mask]
-        target = target[known_mask]
-        probs = preds.squeeze()
-        import pdb
-
-        pdb.set_trace()
-        correct_voxels = target == mask_ids
-        np.save("probs.npy", coords[correct_voxels])
-
-        return binary_calibration_error(probs, target == mask_ids, n_bins=15, norm="l1")
-
     def compute_ece_empty(self, occ_logits, occ_targets):
         ce_error = 0
         for occ_logit, occ_target in zip(occ_logits, occ_targets):
