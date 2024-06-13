@@ -210,7 +210,7 @@ WORK IN PROGRESS
       python scripts/eval.py --n_infers=1 --model_path=ckpt/pasco_single.ckpt
       ```
 
-      
+   
 
 3. Output looks like following:
       ```
@@ -261,6 +261,7 @@ We thank the authors of the following repositories for making their code and mod
 - https://github.com/astra-vision/LMSCNet
 - https://github.com/yanx27/JS3C-Net
 - https://github.com/facebookresearch/Mask2Former
+- https://github.com/ENSTA-U2IS-AI/torch-uncertainty
 
 
 The research was supported by the French project SIGHT (ANR-20-CE23-0016), the ERC Starting Grant SpatialSem (101076253), and the SAMBA collaborative project co-funded by
