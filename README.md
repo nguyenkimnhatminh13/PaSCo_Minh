@@ -254,13 +254,14 @@ WORK IN PROGRESS
 WORK IN PROGRESS
 
 # 5. Visualization
-1. Run the following command to generate the prediction using the downloaded checkpoint `ckpt/pasco_single.ckpt`:
+1. Install Mayavi following [the official instructions](https://docs.enthought.com/mayavi/mayavi/installation.html). 
+2. Run the following command to generate the prediction using the downloaded checkpoint `ckpt/pasco_single.ckpt`:
       ```
       python scripts/save_outputs_panoptic.py --model_path=ckpt/pasco_single.ckpt \
             --dataset_preprocess_root=/gpfsscratch/rech/kvd/uyl37fq/pasco_preprocess/kitti \
             --dataset_root=/gpfsdswork/dataset/SemanticKITTI
       ```
-2. Draw the generated output:
+3. Draw the generated output:
       ```
       python scripts/visualize.py
       ```
