@@ -253,7 +253,16 @@ WORK IN PROGRESS
 WORK IN PROGRESS
 
 # 5. Visualization
-WORK IN PROGRESS
+1. Run the following command to generate the prediction using the downloaded checkpoint `ckpt/pasco_single.ckpt`:
+      ```
+      python scripts/save_outputs_panoptic.py --model_path=ckpt/pasco_single.ckpt \
+            --dataset_preprocess_root=/gpfsscratch/rech/kvd/uyl37fq/pasco_preprocess/kitti \
+            --dataset_root=/gpfsdswork/dataset/SemanticKITTI
+      ```
+2. Draw the generated output:
+      ```
+      python scripts/visualize.py
+      ```
 
 # Acknowledgment
 We thank the authors of the following repositories for making their code and models publicly available:
