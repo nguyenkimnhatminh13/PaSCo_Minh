@@ -29,4 +29,7 @@ ckpt/*
 
 logs/
 
+*whl
+gpfsdswork/
+gpfsscratch/
 output/
