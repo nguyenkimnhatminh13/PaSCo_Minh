@@ -279,7 +279,7 @@ class SetCriterion(nn.Module):
 
             pred_mask_F = voxel_logits.features_at(i)  # [N, num_queries]
             pred_mask_C = voxel_logits.coordinates_at(i)  # [N, 4]
-            pred_mask_C = ME.utils.batched_coordinates([pred_mask_C]).to(
+            pred_mask_C = ME.utils.batched_coordinates([pred_mask_C.float()]).to(
                 pred_mask_F.device
             )
             voxel_logit = ME.SparseTensor(features=pred_mask_F, coordinates=pred_mask_C)

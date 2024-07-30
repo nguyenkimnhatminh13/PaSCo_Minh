@@ -116,10 +116,11 @@ class Ensembler(nn.Module):
         for i in range(len(voxel_prob_denses)):
             voxel_prob = ME.to_sparse(voxel_prob_denses[i].unsqueeze(0))
             coords = voxel_prob.C.long()
+            # coords = voxel_prob.C.float()  # minh
             sem_prob = ensemble_sem_prob_denses[i][
                 :, coords[:, 1], coords[:, 2], coords[:, 3]
             ].T
-            sem_prob = ME.SparseTensor(sem_prob, coords)
+            sem_prob = ME.SparseTensor(sem_prob, coords.float())
             panop_prob_prediction = {
                 "sem_probs": sem_prob,
                 "voxel_probs": voxel_prob,

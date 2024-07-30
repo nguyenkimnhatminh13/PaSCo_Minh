@@ -135,9 +135,18 @@ class DummyDataset(Dataset):
             mask[old_mask == instance_id] = i
         print("#instances", i)
 
+        predSegmentsInfos = [[]]
+        for k in range(1, i + 1):
+            predSegmentsInfo = {"id": int(k), "isthing": True, "category_id": 1}
+            predSegmentsInfos[0].append(predSegmentsInfo)
+
+        filter_sem_labels = np.expand_dims(filter_sem_label, axis=(0))
+        masks = np.expand_dims(mask, axis=(0))
+
         out_dict = {
-            "instance_labels": mask,
-            "semantic_labels": filter_sem_label,
+            "ssc_pred": filter_sem_labels,
+            "pred_panoptic_seg": masks,
+            "pred_segments_info": predSegmentsInfos,
         }
         with open(out_path, "wb") as handle:
             pickle.dump(out_dict, handle)

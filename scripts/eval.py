@@ -11,17 +11,16 @@ set_random_seed(42)
 
 
 @click.command()
-@click.option("--dataset_root", default="/gpfsdswork/dataset/SemanticKITTI")
+@click.option("--dataset_root", default="gpfsdswork/dataset/SemanticKITTI")
 @click.option(
     "--config_path",
     default="semantic-kitti.yaml",
 )
 @click.option(
     "--dataset_preprocess_root",
-    default="/gpfsscratch/rech/kvd/uyl37fq/monoscene_preprocess/kitti",
+    default="gpfsscratch/rech/kvd/uyl37fq/pasco_preprocess/kitti",
 )
 @click.option("--model_path", default="")
-
 @click.option("--n_infers", default=1, help="batch size")
 @click.option("--n_gpus", default=1, help="number of GPUs")
 @click.option("--iou_threshold", default=0.2, help="number of GPUs")
@@ -74,6 +73,7 @@ def main(
 
     # enable_dropout(model)
     trainer.test(model=model, dataloaders=data_module.val_dataloader())
+
     # trainer.test(model=model, dataloaders=data_module.val_dataloader())
 
 

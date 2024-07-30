@@ -24,15 +24,19 @@ from datasets import SemanticKITTI, Collate
 import pickle
 import time
 
-if __name__ == "__main__":
 
+def main():
     # --- Arguments
     parser = argparse.ArgumentParser(description="Evaluation")
     parser.add_argument("--config", type=str, help="Path to config file")
     parser.add_argument("--ckpt", type=str, help="Path to checkpoint")
-    parser.add_argument("--path_dataset", type=str, help="Path to SemanticKITTI dataset")
+    parser.add_argument(
+        "--path_dataset", type=str, help="Path to SemanticKITTI dataset"
+    )
     parser.add_argument("--result_folder", type=str, help="Path to where result folder")
-    parser.add_argument("--num_votes", type=int, default=1, help="Number of test time augmentations")
+    parser.add_argument(
+        "--num_votes", type=int, default=1, help="Number of test time augmentations"
+    )
     parser.add_argument("--batch_size", type=int, default=1, help="Batch size")
     parser.add_argument("--num_workers", type=int, default=6)
     parser.add_argument("--phase", required=True, help="val or test")
@@ -90,6 +94,7 @@ if __name__ == "__main__":
         grid_shape=config["waffleiron"]["grids_size"],
         nb_class=config["classif"]["nb_class"],
     )
+
     net = net.cuda()
 
     # --- Load weights
@@ -100,7 +105,7 @@ if __name__ == "__main__":
         # If model was trained using DataParallel or DistributedDataParallel
         state_dict = {}
         for key in ckpt["net"].keys():
-            state_dict[key[len("module."):]] = ckpt["net"][key]
+            state_dict[key[len("module.") :]] = ckpt["net"][key]
         net.load_state_dict(state_dict)
     net = net.eval()
 
@@ -108,8 +113,11 @@ if __name__ == "__main__":
     id_vote = 0
     inference_times = []
     cnt = 0
-    for it, batch in enumerate(tqdm(loader, bar_format="{desc:<5.5}{percentage:3.0f}%|{bar:50}{r_bar}")):
-        
+
+    for it, batch in enumerate(
+        tqdm(loader, bar_format="{desc:<5.5}{percentage:3.0f}%|{bar:50}{r_bar}")
+    ):
+
         # Reset vote
         if id_vote == 0:
             vote = None
@@ -119,17 +127,14 @@ if __name__ == "__main__":
         coords_and_intensity = batch["pc_orig"]
         feat = batch["feat"].cuda(non_blocking=True)
         labels = batch["labels_orig"].cuda(non_blocking=True)
-        batch["upsample"] = [
-            up.cuda(non_blocking=True) for up in batch["upsample"]
-        ]
+        batch["upsample"] = [up.cuda(non_blocking=True) for up in batch["upsample"]]
         cell_ind = batch["cell_ind"].cuda(non_blocking=True)
         occupied_cell = batch["occupied_cells"].cuda(non_blocking=True)
         neighbors_emb = batch["neighbors_emb"].cuda(non_blocking=True)
         net_inputs = (feat, cell_ind, occupied_cell, neighbors_emb)
 
         assert (coords_and_intensity[0] - coords_and_intensity[1]).sum() == 0
-        
-        
+
         with torch.autocast("cuda", enabled=True):
             with torch.inference_mode():
                 torch.cuda.synchronize()
@@ -139,7 +144,7 @@ if __name__ == "__main__":
                 torch.cuda.synchronize()
                 end = time.time()
                 inference_times.append(end - start)
-                
+
                 for b in range(out.shape[0]):
                     temp = out[b, :, batch["upsample"][b]].T
                     if vote is None:
@@ -149,15 +154,14 @@ if __name__ == "__main__":
                     embedding_temp = embedding[b, :, batch["upsample"][b]]
                     embeddings.append(embedding_temp)
                 id_vote += 1
-                
-        
+
         if id_vote == args.num_votes:
             assert batch["filename"][0] == batch["filename"][-1]
-            save_file = batch["filename"][0][len(dataset.rootdir) + len("/dataset"):]
+            save_file = batch["filename"][0][len(dataset.rootdir) + len("/dataset") :]
             save_file = save_file.replace("velodyne", "seg_feats_tta")[:-3] + "pkl"
             save_file = args.result_folder + save_file
             os.makedirs(os.path.split(save_file)[0], exist_ok=True)
-            
+
             embedding = torch.stack(embeddings, dim=0)
             embedding = embedding.cpu().numpy()
             vote = vote / (args.num_votes * args.batch_size)
@@ -169,11 +173,14 @@ if __name__ == "__main__":
                 "coords": coords_and_intensity[0],
                 "vote": vote.cpu().numpy(),
             }
-           
-            with open(save_file, 'wb') as fp:
+
+            with open(save_file, "wb") as fp:
                 pickle.dump(banana, fp)
                 print("saved to {}".format(save_file))
-        
-              
-    print(inference_times)
-    print("inference time: {}".format(np.mean(inference_times[1:])))
+
+    # print(inference_times)
+    # print("inference time: {}".format(np.mean(inference_times[1:])))
+
+
+if __name__ == "__main__":
+    main()

@@ -36,11 +36,11 @@ class MinkowskiNonlinearityBase(ME.MinkowskiModuleBase):
 
 
 class MinkowskiLocationDropout(MinkowskiNonlinearityBase):
-    MODULE = torch.nn.Dropout1d
+    MODULE = torch.nn.Dropout
 
 
 class MinkowskiSpatialDropout(MinkowskiNonlinearityBase):
-    MODULE = torch.nn.Dropout1d
+    MODULE = torch.nn.Dropout
 
     def forward(self, input):
         output = self.module(input.F.T).T

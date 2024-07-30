@@ -194,7 +194,10 @@ class UNet3DV2(nn.Module):
             (bs, deepest_features.shape[1], scene_size[0], scene_size[1], scene_size[2])
         )
         deepest_features_dense = deepest_features.dense(
-            dense_shape, min_coordinate=torch.IntTensor([*global_min_coords])
+            dense_shape,
+            min_coordinate=torch.IntTensor([*global_min_coords]).to(
+                deepest_features.device
+            ),
         )[0]
 
         deepest_features_dense = self.dense3d(deepest_features_dense)

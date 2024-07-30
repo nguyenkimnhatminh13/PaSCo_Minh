@@ -453,7 +453,8 @@ class Net(pl.LightningModule):
                         [1, self.n_classes, scene_size[0], scene_size[1], scene_size[2]]
                     )
                     sem_logits = sem_logits.dense(
-                        shape, min_coordinate=torch.IntTensor([*min_C])
+                        shape,
+                        min_coordinate=torch.IntTensor([*min_C]).to(sem_logits.device),
                     )[0]
 
                     sem_logits = sem_logits.squeeze()
@@ -542,11 +543,12 @@ class Net(pl.LightningModule):
         self,
         batch,
         step_type,
-        eval=False,
+        eval=True,
         return_ensemble=True,
         measure_time=False,
         draw=False,
     ):
+        # device = "cuda"  # minh
         in_coords, in_feats = self.feat(batch["in_feats"], batch["in_coords"])
         in_feat = ME.SparseTensor(in_feats, in_coords.int())
         in_feat = self.augmenter.merge(in_feat)

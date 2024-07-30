@@ -1,6 +1,7 @@
 import torch
 import os
 import glob
+from typing import List as tlist
 from torch.utils.data import Dataset
 import numpy as np
 import pasco.data.semantic_kitti.io_data as SemanticKittiIO
@@ -41,6 +42,7 @@ class KittiDataset(Dataset):
         frame_ids=[],
     ):
         super().__init__()
+        print(root)
         self.root = root
 
         self.complete_scale = complete_scale
@@ -92,6 +94,7 @@ class KittiDataset(Dataset):
         self.thing_ids = thing_ids
 
         self.scans = []
+
         for sequence in self.sequences:
 
             glob_path = os.path.join(
@@ -172,6 +175,7 @@ class KittiDataset(Dataset):
             max_C = max_C_semantic
         min_C = torch.floor(min_C.float() / self.complete_scale) * self.complete_scale
         min_C = min_C.int()
+        max_C = max_C.float()  # minh
         max_C = torch.ceil(max_C)
 
         scene_size = compute_scene_size(min_C, max_C, scale=self.complete_scale).int()
@@ -349,7 +353,7 @@ class KittiDataset(Dataset):
                 "seg_feats_tta",
                 "{}.pkl".format(add_frame_id),
             )
-
+            print(path)
             if os.path.exists(path):
 
                 if fuse_idx == 0:
@@ -591,7 +595,7 @@ class KittiDataset(Dataset):
         return new_coords
 
     @staticmethod
-    def prepare_target(target: torch.Tensor, ignore_labels: list[int]) -> dict:
+    def prepare_target(target: torch.Tensor, ignore_labels: tlist[int]) -> dict:
         # z, y, x = target.shape
         unique_ids = torch.unique(target)
         unique_ids = torch.tensor(
@@ -728,9 +732,9 @@ class KittiDataset(Dataset):
 
 
 if __name__ == "__main__":
-    kitti_config = "/gpfswork/rech/kvd/uyl37fq/code/uncertainty/uncertainty/data/semantic_kitti/semantic-kitti.yaml"
-    kitti_root = "/gpfsdswork/dataset/SemanticKITTI"
-    kitti_preprocess_root = "/gpfsscratch/rech/kvd/uyl37fq/monoscene_preprocess/kitti"
+    kitti_config = "gpfswork/rech/kvd/uyl37fq/code/uncertainty/uncertainty/data/semantic_kitti/semantic-kitti.yaml"
+    kitti_root = "gpfsdswork/dataset/SemanticKITTI"
+    kitti_preprocess_root = "gpfsscratch/rech/kvd/uyl37fq/monoscene_preprocess/kitti"
 
     dataset = KittiDataset(
         "val",

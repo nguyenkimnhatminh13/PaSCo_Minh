@@ -149,7 +149,7 @@ class TransformerPredictorV2(nn.Module):
         outputs_class, outputs_mask = self.pred_heads(output, voxel_feat)
         predictions_class.append(outputs_class)
         predictions_mask.append(outputs_mask)
-        
+
         for i in range(self.num_layers):
             src_F = self.input_projs[i](srcs[i])
             src_C = src_Cs[i]
@@ -230,7 +230,7 @@ class TransformerPredictorV2(nn.Module):
         keep_mask = (outputs_mask.sigmoid() > 0.5).detach().float()
 
         keep_mask_F = torch.cat([t for t in keep_mask], dim=0)
-        keep_mask_C = [t[:, 1:] for t in voxel_coord]
+        keep_mask_C = [t[:, 1:].float() for t in voxel_coord]
         keep_mask_C = ME.utils.batched_coordinates(keep_mask_C).to(keep_mask_F.device)
         keep_mask_sparse = ME.SparseTensor(keep_mask_F, keep_mask_C)
 
@@ -256,7 +256,7 @@ class TransformerPredictorV2(nn.Module):
                 batch_indices
             ]
             keep_mask_sparse_downscaled_C_i = ME.utils.batched_coordinates(
-                [keep_mask_sparse_downscaled_C_i[:, 1:]]
+                [keep_mask_sparse_downscaled_C_i[:, 1:].float()]
             ).to(keep_mask_sparse_downscaled_F_i.device)
 
             keep_mask_sparse_downscaled_i = ME.SparseTensor(
@@ -274,7 +274,9 @@ class TransformerPredictorV2(nn.Module):
                         scene_size[2],
                     ]
                 ),
-                min_coordinate=torch.IntTensor([*min_Cs[i]]),
+                min_coordinate=torch.IntTensor([*min_Cs[i]]).to(
+                    keep_mask_sparse_downscaled_i.device
+                ),
             )[0]
             src_C_i = src_C_i.long()
             keep_mask_i = keep_mask_dense_downscaled_i[
