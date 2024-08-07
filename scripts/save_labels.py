@@ -13,17 +13,24 @@ VOXEL_SIZE = 0.2
 
 
 @click.command()
-@click.option("--root", default="gpfsdswork/dataset/SemanticKITTI/dataset/sequences")
+@click.option(
+    "--root",
+    default="gpfsdswork/dataset/SemanticKITTI/dataset/sequences",
+)
 @click.option("--output_dir", default="output/sequences")
 @click.option(
     "--gen_label_root", 
-    default="gpfsscratch/rech/kvd/uyl37fq/pasco_preprocess/gt_modified/instance_labels_v2",
+    default=(
+        "gpfsscratch/rech/kvd/uyl37fq/pasco_preprocess/gt_modified/instance_labels_v2"
+    ),
 )
 def main(root: str, output_dir: str, gen_label_root: str) -> None:
 
     sequence_dir_names = os.listdir(gen_label_root)
     sequence_prog_bar = tqdm(sequence_dir_names)
-    for sequence_idx, sequence_dir_name in enumerate(sequence_prog_bar, start=1):
+    for sequence_idx, sequence_dir_name in enumerate(
+        sequence_prog_bar, start=1
+    ):
         sequence_prog_bar.set_description(
             f"Sequence {sequence_idx}/{len(sequence_dir_names)}"
         )
@@ -32,7 +39,9 @@ def main(root: str, output_dir: str, gen_label_root: str) -> None:
         gen_label_names = os.listdir(gen_label_dir)
         scan_prog_bar = tqdm(gen_label_names, leave=False)
         for scan_idx, gen_label_name in enumerate(scan_prog_bar, start=1):
-            scan_prog_bar.set_description(f"Scan {scan_idx}/{len(gen_label_names)}")
+            scan_prog_bar.set_description(
+                f"Scan {scan_idx}/{len(gen_label_names)}"
+            )
 
             # Load scan
             scan_dir = os.path.join(root, sequence_dir_name, "velodyne")
@@ -81,7 +90,12 @@ def main(root: str, output_dir: str, gen_label_root: str) -> None:
                 .replace("velodyne", "discrete_coords")
             )
             os.makedirs(os.path.dirname(discrete_coord_path), exist_ok=True)
-            discrete_coords.numpy().astype(np.int32).tofile(discrete_coord_path)
+            (
+                discrete_coords
+                .numpy()
+                .astype(np.int32)
+                .tofile(discrete_coord_path)
+            )
 
             # Save scan
             output_scan = np.hstack([unique_coords, unique_feats])
