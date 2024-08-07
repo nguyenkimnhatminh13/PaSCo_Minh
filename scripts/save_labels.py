@@ -3,7 +3,6 @@ import os
 import click
 import MinkowskiEngine as ME
 import numpy as np
-import yaml
 from tqdm.auto import tqdm
 
 
