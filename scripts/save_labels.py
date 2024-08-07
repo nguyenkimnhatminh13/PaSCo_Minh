@@ -76,13 +76,13 @@ def main(root: str, output_dir: str, gen_label_root: str) -> None:
             unique_instance_labels = instance_labels[keep][mapping]
 
             # Save discrete coords
-            discrete_coords_path = (
+            discrete_coord_path = (
                 scan_path
                 .replace(root, output_dir)
                 .replace("velodyne", "discrete_coords")
             )
-            os.makedirs(os.path.dirname(discrete_coords_path), exist_ok=True)
-            discrete_coords.numpy().astype(np.int32).tofile(discrete_coords_path)
+            os.makedirs(os.path.dirname(discrete_coord_path), exist_ok=True)
+            discrete_coords.numpy().astype(np.int32).tofile(discrete_coord_path)
 
             # Save scan
             output_scan = np.hstack([unique_coords, unique_feats])
